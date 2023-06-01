@@ -1,0 +1,16 @@
+{
+  "greetings": [
+    {
+      "id": 1,
+      "english": "Hello",
+      "foregin": "Hola"
+    }
+  ],
+  "resturaunt": [
+    {
+      "id": 1,
+      "english": "Bill please",
+      "foregin": "spanish bill please"
+    }
+  ]
+}

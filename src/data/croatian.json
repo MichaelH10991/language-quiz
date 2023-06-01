@@ -1,0 +1,109 @@
+{
+  "greetings": [
+    {
+      "id": 0,
+      "english": "Hello/Hi/Goodbye",
+      "foregin": "Bok"
+    },
+    {
+      "id": 1,
+      "english": "Good day",
+      "pronounce": "DOH-bahr-dahn",
+      "foregin": "Dobar dan"
+    },
+    {
+      "id": 2,
+      "english": "Good morning",
+      "foregin": "Dobro jutro"
+    },
+    {
+      "id": 3,
+      "english": "Good evening",
+      "foregin": "Dobra vecer",
+      "foreginDisplay": "Dobra večer"
+    },
+    {
+      "id": 4,
+      "english": ["Goodnight"],
+      "foregin": "Laku noc",
+      "foreginDisplay": "Laku noč"
+    },
+    {
+      "id": 6,
+      "english": "Hello",
+      "foregin": "Zdravo"
+    },
+    {
+      "id": 7,
+      "english": "Goodbye",
+      "foregin": "Dovidenja",
+      "pronounce": "doh-vee-JEH-nyah",
+      "foreginDisplay": "Doviđenja"
+    }
+  ],
+  "basics": [
+    {
+      "id": 0,
+      "english": "Hello/Hi",
+      "foregin": "Bok"
+    },
+    {
+      "id": 1,
+      "english": "How are you",
+      "foregin": "Kako ste"
+    },
+    {
+      "id": 2,
+      "english": "Hello/Hi/Goodbye",
+      "foregin": "Bok"
+    },
+    {
+      "id": 3,
+      "english": "Good day",
+      "foregin": "Dobar dan"
+    },
+    {
+      "id": 4,
+      "english": "Good morning",
+      "foregin": "Dobro jutro"
+    },
+    {
+      "id": 5,
+      "english": "Good evening",
+      "foregin": "Dobra vecer",
+      "foreginDisplay": "Dobra večer"
+    },
+    {
+      "id": 6,
+      "english": ["Goodnight"],
+      "foregin": "Laku noc",
+      "foreginDisplay": "Laku noč"
+    },
+    {
+      "id": 7,
+      "english": "Hello",
+      "foregin": "Zdravo"
+    },
+    {
+      "id": 8,
+      "english": "Goodbye",
+      "foregin": "Dovidenja",
+      "pronounce": "doh-vee-JEH-nyah",
+      "foreginDisplay": "Doviđenja"
+    }
+  ],
+  "responses": [
+    {
+      "id": 0,
+      "english": "Hello/Hi",
+      "foregin": "Bok"
+    }
+  ],
+  "resturaunt": [
+    {
+      "id": 1,
+      "english": "Bill please",
+      "foregin": "Bill please (but in croatian)"
+    }
+  ]
+}
