@@ -29,7 +29,7 @@ const randomQuestion = (questions) => {
 // };
 
 const defaultLanguage = "croatian";
-const defaultQuestionSet = "greetings";
+const defaultQuestionSet = "basics";
 
 const Question = (props) => {
   const { phrase, language, peek, flip } = props;
@@ -103,18 +103,20 @@ const Feedback = (props) => {
 };
 
 const checkAnswer = (answer, phrase, flip) => {
-  const comp = (ans, phrase) => {
-    if (Array.isArray(phrase)) {
-      const transformed = phrase.map((item) => item.toLocaleLowerCase().trim());
-      return phrase.includes(transformed);
+  const comp = (ans, phrase, options) => {
+    if (options) {
+      const transformed = options.map((item) =>
+        item.toLocaleLowerCase().trim()
+      );
+      return transformed.includes(ans);
     }
     return ans.toLocaleLowerCase().trim() === phrase.toLocaleLowerCase();
   };
 
   if (flip) {
-    return comp(answer, phrase.english);
+    return comp(answer, phrase.english, phrase.englishOptions);
   }
-  return comp(answer, phrase.foregin);
+  return comp(answer, phrase.foregin, phrase.foreginOptions);
 };
 
 function App() {
@@ -170,11 +172,14 @@ function App() {
   };
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-    setQuestionSet(defaultQuestionSet);
-    setQuestions(languages[e.target.value][defaultQuestionSet]);
-    setQuestionsLeft(languages[e.target.value][defaultQuestionSet].length);
-    setPhrase(randomQuestion(languages[e.target.value][defaultQuestionSet]));
+    const value = e.target.value;
+    const language = languages[value];
+    const questionSet = Object.keys(languages[value])[0]; // first question set
+    setLanguage(value);
+    setQuestionSet(questionSet);
+    setQuestions(language[questionSet]);
+    setQuestionsLeft(language[Object.keys(language)[0]].length);
+    setPhrase(randomQuestion(language[questionSet]));
   };
 
   const handleQuestionSetChange = (e) => {

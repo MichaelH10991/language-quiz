@@ -1,4 +1,4 @@
-import croatian from "./croatian.json";
+import croatian from "./croatian";
 import spanish from "./spanish.json";
 
 const exportedObject = {
