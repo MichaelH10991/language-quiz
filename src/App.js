@@ -2,6 +2,8 @@
 import "./App.css";
 import { useState } from "react";
 
+import Revise from "./components/Revise";
+
 import languages from "./data";
 
 // languages = self explanitory, can contain many question sets
@@ -134,6 +136,7 @@ function App() {
   const [questionsLeft, setQuestionsLeft] = useState(questions.length);
   const [infinite, setInfinite] = useState(false);
   const [flip, setFlip] = useState(false);
+  const [revise, setRevise] = useState(false);
 
   const submitAnswer = (event) => {
     if (checkAnswer(answer, phrase, flip)) {
@@ -232,6 +235,7 @@ function App() {
             showFeedback={showFeedback}
           />
         </span>
+        <Revise revise={revise} setRevise={setRevise} phrases={questions} />
       </header>
     </div>
   );
