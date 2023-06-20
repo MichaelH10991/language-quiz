@@ -59,19 +59,33 @@ const responses = [
 const resturaunt = [
   {
     id: v4(),
-    english: "Bill please",
-    foregin: "Bill please (but in croatian)",
+    english: "Check please",
+    foregin: "Račun molim",
   },
   {
     id: v4(),
     english: "table for 2 people please",
     foregin: "stol za dva osobe molim",
   },
+  {
+    id: v4(),
+    english: "table",
+    foregin: "stol",
+  },
+];
+
+const questions = [
+  {
+    id: v4(),
+    english: "Where is",
+    foregin: "gdje je",
+  },
 ];
 
 const basics = [
   ...greetings,
   ...responses,
+  ...questions,
   { id: v4(), english: "Please", foregin: "Molim" },
   {
     id: v4(),
@@ -129,7 +143,7 @@ const numbers = [
     id: v4(),
     english: "six",
     foregin: "sest",
-    foreginDisplay: "sešestst",
+    foreginDisplay: "sešt",
   },
   {
     id: v4(),
