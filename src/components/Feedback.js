@@ -1,6 +1,7 @@
 const Feedback = (props) => {
   const { correct, previousAns, showFeedback, flip } = props;
 
+  // initial state, dont show any feedback.
   if (!showFeedback) {
     return undefined;
   }

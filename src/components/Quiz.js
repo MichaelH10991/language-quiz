@@ -45,7 +45,6 @@ const Quiz = () => {
   const [peek, setPeek] = useState(false);
   const [phrase, setPhrase] = useState(randomQuestion(questions));
   const [previousAns, setPreviousAns] = useState("");
-  const [questionsLeft, setQuestionsLeft] = useState(questions.length);
   const [infinite, setInfinite] = useState(false);
   const [flip, setFlip] = useState(false);
 
@@ -59,13 +58,18 @@ const Quiz = () => {
         setPhrase(randomQuestion(questions));
         event.target.value = "";
       } else {
-        // get rid of question
+        /**
+         * instead of getting rid of it completely, we could mark it as complete
+         * this way we can filter it out when rendering and could also
+         * use it for doing a strikethrough
+         *
+         * */
+
         const filtered = questions.filter((item) => {
           return item.id !== phrase.id;
         });
         setQuestions(filtered);
         setPhrase(randomQuestion(filtered));
-        setQuestionsLeft(filtered.length);
         setPreviousAns(phrase);
         setAnswer("");
         setCorrect(true);
@@ -90,62 +94,84 @@ const Quiz = () => {
     setLanguage(value);
     setQuestionSet(questionSet);
     setQuestions(language[questionSet]);
-    setQuestionsLeft(language[Object.keys(language)[0]].length);
     setPhrase(randomQuestion(language[questionSet]));
   };
 
   const handleQuestionSetChange = (e) => {
     setQuestionSet(e.target.value);
     setQuestions(languages[language][e.target.value]);
-    setQuestionsLeft(languages[language][e.target.value].length);
     setPhrase(randomQuestion(languages[language][e.target.value]));
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Question phrase={phrase} language={language} peek={peek} flip={flip} />
-        <span>
-          <input
-            onInput={(e) => setAnswer(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            onMouseDown={() => setPeek(true)}
-            onMouseUp={() => setPeek(false)}
+    <div style={{ padding: 35 + "px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div style={{ flex: 1 }}>
+          <div
+            style={{
+              display: "relative",
+              // justifyContent: "center",
+              // alignItems: "center",
+            }}
           >
-            Peek
-          </button>
-          <button onClick={() => setPhrase(randomQuestion(questions))}>
-            Skip
-          </button>
-          <button onClick={() => setFlip(!flip)}>Flip</button>
-          <Feedback
-            flip={flip}
-            correct={correct}
-            previousAns={previousAns}
-            showFeedback={showFeedback}
-          />
-        </span>
-        <Dialog>
-          <div style={{ padding: 8 + "px" }}>
-            <select value={language} onChange={handleLanguageChange}>
-              {Object.keys(languages).map((item) => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
-            <select value={questionSet} onChange={handleQuestionSetChange}>
-              {Object.keys(languages[language]).map((item) => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
+            <Question
+              phrase={phrase}
+              language={language}
+              peek={peek}
+              flip={flip}
+            />
+            <span>
+              <input
+                onInput={(e) => setAnswer(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                onMouseDown={() => setPeek(true)}
+                onMouseUp={() => setPeek(false)}
+              >
+                Peek
+              </button>
+              <button onClick={() => setPhrase(randomQuestion(questions))}>
+                Skip
+              </button>
+              <button onClick={() => setFlip(!flip)}>Flip</button>
+              <Feedback
+                flip={flip}
+                correct={correct}
+                previousAns={previousAns}
+                showFeedback={showFeedback}
+              />
+            </span>
           </div>
-          <div>Questions left: {questionsLeft}</div>
-          Infinite Mode
-          <input type="checkbox" onClick={() => setInfinite(!infinite)}></input>
-          <Revise phrases={questions} />
-        </Dialog>
-      </header>
+        </div>
+        <div>
+          <Dialog>
+            <div style={{ padding: 8 + "px" }}>
+              <select value={language} onChange={handleLanguageChange}>
+                {Object.keys(languages).map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+              <select value={questionSet} onChange={handleQuestionSetChange}>
+                {Object.keys(languages[language]).map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+            <div style={{ textAlign: "left", padding: 5 + "px" }}>
+              <div>Questions left: {questions.length}</div>
+              <div>
+                Infinite Mode
+                <input
+                  type="checkbox"
+                  onClick={() => setInfinite(!infinite)}
+                ></input>
+              </div>
+              <Revise phrases={questions} />
+            </div>
+          </Dialog>
+        </div>
+      </div>
     </div>
   );
 };

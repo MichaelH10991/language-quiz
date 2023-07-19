@@ -2,7 +2,8 @@ const Dialog = ({ children }) => {
   return (
     <div
       style={{
-        position: "absolute",
+        // position: "absolute",
+        inlineSize: 300 + "px",
         top: 0,
         right: 0,
         border: "solid",
