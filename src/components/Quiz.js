@@ -7,6 +7,7 @@ import Revise from "./Revise";
 import Dialog from "./OptionsDialog";
 import Question from "./Question";
 import Feedback from "./Feedback";
+import ListenButton from "./ListenButton";
 
 import languages from "../data";
 
@@ -47,6 +48,7 @@ const Quiz = () => {
   const [previousAns, setPreviousAns] = useState("");
   const [infinite, setInfinite] = useState(false);
   const [flip, setFlip] = useState(false);
+  const [enablePlayback, setEnablePlayback] = useState(false);
 
   const submitAnswer = (event) => {
     if (checkAnswer(answer, phrase, flip)) {
@@ -168,6 +170,16 @@ const Quiz = () => {
                 ></input>
               </div>
               <Revise phrases={questions} />
+              <span>
+                Enable Playback
+                <input
+                  type="checkbox"
+                  onClick={() => setEnablePlayback(!enablePlayback)}
+                />
+                {enablePlayback ? (
+                  <ListenButton phrase={phrase.foregin} />
+                ) : undefined}
+              </span>
             </div>
           </Dialog>
         </div>
