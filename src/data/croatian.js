@@ -78,7 +78,7 @@ const questions = [
   {
     id: v4(),
     english: "Where is",
-    foregin: "gdje je",
+    foregin: "Gdje je",
   },
 ];
 
@@ -92,6 +92,7 @@ const basics = [
     english: "You're welcome",
     englishOptions: ["youre welcome", "you're welcome"],
     foregin: "Nema na cemu",
+    foreginDisplay: "Nema na čemu",
     pronounce: "NEH-mah na CHEH-moo",
   },
   { id: v4(), english: "Yes", foregin: "Da" },
@@ -107,7 +108,6 @@ const basics = [
     id: v4(),
     english: "cheers",
     foregin: "Nazdravlje",
-    foreginOptions: ["Nazdravlje", "Zivijeli"],
     pronounce: "NAHZ-drahv-yah",
   },
 ];

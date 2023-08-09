@@ -1,3 +1,5 @@
+import ListenButton from "./ListenButton";
+
 const Feedback = (props) => {
   const { correct, previousAns, showFeedback, flip } = props;
 
@@ -11,7 +13,12 @@ const Feedback = (props) => {
       Correct;{" "}
       {flip
         ? previousAns.english
-        : `${previousAns.foregin} ${previousAns.pronounce || ""}`}
+        : `${previousAns.foreginDisplay || previousAns.foregin} ${
+            previousAns.pronounce || ""
+          }`}
+      <ListenButton
+        phrase={previousAns.foreginDisplay || previousAns.foregin}
+      />
     </div>
   ) : (
     <div style={{ color: "red" }}>Incorrect</div>

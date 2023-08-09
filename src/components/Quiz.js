@@ -34,6 +34,27 @@ const checkAnswer = (answer, phrase, flip) => {
   return comp(answer, phrase.foregin, phrase.foreginOptions);
 };
 
+const questionsLeft = (questions) =>
+  questions.filter((question) => !question.done);
+
+const quizHelper = (questions) => {
+  const questionsMarkedAsDone = (phrase) =>
+    questions.map((question) => {
+      if (question.id === phrase.id) {
+        return {
+          ...question,
+          done: true,
+        };
+      }
+      return question;
+    });
+
+  const questionsLeft = (questions) =>
+    questions.filter((question) => !question.done);
+
+  return { questionsMarkedAsDone, questionsLeft };
+};
+
 const Quiz = () => {
   const [answer, setAnswer] = useState("");
   const [language, setLanguage] = useState(defaultLanguage);
@@ -46,9 +67,8 @@ const Quiz = () => {
   const [peek, setPeek] = useState(false);
   const [phrase, setPhrase] = useState(randomQuestion(questions));
   const [previousAns, setPreviousAns] = useState("");
-  const [infinite, setInfinite] = useState(false);
+  const [infinite, setInfinite] = useState(true);
   const [flip, setFlip] = useState(false);
-  const [enablePlayback, setEnablePlayback] = useState(false);
 
   const submitAnswer = (event) => {
     if (checkAnswer(answer, phrase, flip)) {
@@ -67,11 +87,24 @@ const Quiz = () => {
          *
          * */
 
-        const filtered = questions.filter((item) => {
-          return item.id !== phrase.id;
+        // const filtered = questions.filter((item) => {
+        //   return item.id !== phrase.id;
+        // });
+        // setQuestions(filtered);
+        // setPhrase(randomQuestion(filtered));
+        const helpers = quizHelper(questions);
+        const questionsMarkedAsDone = questions.map((question) => {
+          if (question.id === phrase.id) {
+            return {
+              ...question,
+              done: true,
+            };
+          }
+          return question;
         });
-        setQuestions(filtered);
-        setPhrase(randomQuestion(filtered));
+        console.log(questionsMarkedAsDone);
+        setQuestions(questionsMarkedAsDone);
+        setPhrase(randomQuestion(questionsLeft(questionsMarkedAsDone)));
         setPreviousAns(phrase);
         setAnswer("");
         setCorrect(true);
@@ -108,7 +141,16 @@ const Quiz = () => {
   return (
     <div style={{ padding: 35 + "px" }}>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <div style={{ flex: 1 }}>
+        <div
+          style={{
+            flex: 1,
+            borderStyle: "solid",
+            borderRadius: 9 + "px",
+            background: "#202020",
+            marginRight: 11 + "px",
+            padding: 10 + "px",
+          }}
+        >
           <div
             style={{
               display: "relative",
@@ -126,17 +168,23 @@ const Quiz = () => {
               <input
                 onInput={(e) => setAnswer(e.target.value)}
                 onKeyDown={handleKeyDown}
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
               />
-              <button
-                onMouseDown={() => setPeek(true)}
-                onMouseUp={() => setPeek(false)}
-              >
-                Peek
-              </button>
-              <button onClick={() => setPhrase(randomQuestion(questions))}>
-                Skip
-              </button>
-              <button onClick={() => setFlip(!flip)}>Flip</button>
+              <div>
+                <button
+                  onMouseDown={() => setPeek(true)}
+                  onMouseUp={() => setPeek(false)}
+                >
+                  Peek
+                </button>
+                <button onClick={() => setPhrase(randomQuestion(questions))}>
+                  Skip
+                </button>
+                <button onClick={() => setFlip(!flip)}>Flip</button>
+              </div>
               <Feedback
                 flip={flip}
                 correct={correct}
@@ -161,25 +209,24 @@ const Quiz = () => {
               </select>
             </div>
             <div style={{ textAlign: "left", padding: 5 + "px" }}>
-              <div>Questions left: {questions.length}</div>
+              <div>Questions left: {questionsLeft(questions).length}</div>
               <div>
                 Infinite Mode
                 <input
                   type="checkbox"
+                  checked={infinite}
                   onClick={() => setInfinite(!infinite)}
                 ></input>
               </div>
-              <Revise phrases={questions} />
-              <span>
-                Enable Playback
-                <input
-                  type="checkbox"
-                  onClick={() => setEnablePlayback(!enablePlayback)}
+              <Revise phrases={questions}>
+                <ListenButton
+                  phrase={
+                    (phrase && phrase.foreginDisplay) ||
+                    (phrase && phrase.foregin)
+                  }
+                  buttonText={"Say answer"}
                 />
-                {enablePlayback ? (
-                  <ListenButton phrase={phrase.foregin} />
-                ) : undefined}
-              </span>
+              </Revise>
             </div>
           </Dialog>
         </div>

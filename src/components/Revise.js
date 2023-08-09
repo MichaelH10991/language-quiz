@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const Revise = (props) => {
-  const { phrases } = props;
+  const { phrases, children } = props;
   const [revise, setRevise] = useState(false);
 
   return (
@@ -20,10 +20,11 @@ const Revise = (props) => {
           }}
         >
           {phrases.map((phrase, index) => (
-            <div>
+            <div style={phrase.done ? { textDecoration: "line-through" } : {}}>
               {phrase.english} - {phrase.foregin}
             </div>
           ))}
+          {children}
         </div>
       ) : undefined}
     </div>

@@ -9,7 +9,7 @@ const Question = (props) => {
   const question = () => {
     if (flip) {
       return (
-        <div style={{ whiteSpace: "nowrap" }}>
+        <div>
           <span>What is "</span>
           <span style={{ color: peek ? "green" : " " }}>
             {!peek ? phrase.foregin : phrase.english}
@@ -28,7 +28,7 @@ const Question = (props) => {
       );
     }
     return (
-      <div style={{ whiteSpace: "nowrap" }}>
+      <div>
         <span>What is "</span>
         <span style={{ color: peek ? "green" : " " }}>
           {!peek ? phrase.english : phrase.foreginDisplay || phrase.foregin}
