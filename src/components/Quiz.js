@@ -109,7 +109,7 @@ const Quiz = () => {
 
   return (
     <div style={{}}>
-      <h1>The "Very Good Language Quiz"</h1>
+      <h1>The "Very Good" Language Quiz</h1>
       <div className="foo">
         <div
           style={{
@@ -119,6 +119,7 @@ const Quiz = () => {
             background: "#202020",
             margin: 11 + "px",
             padding: 10 + "px",
+            minWidth: "275px",
           }}
         >
           <div
@@ -216,7 +217,7 @@ const Quiz = () => {
         {`This app is in developmemnt, please check back for updates.`}
         <br />
         <span>
-          {"Click "}
+          {"See the code "}
           <a
             href="https://github.com/MichaelH10991/language-quiz"
             target="_blank"
@@ -224,7 +225,6 @@ const Quiz = () => {
           >
             here
           </a>
-          {" to see the code."}
         </span>
         <br />
         {`Last update: ${process.env.REACT_APP_TIMESTAMP}`}

@@ -11,6 +11,7 @@ const Dialog = ({ children }) => {
         borderRadius: 10 + "px",
         margin: 11 + "px",
         padding: 10 + "px",
+        minWidth: "275px",
       }}
     >
       {children}
