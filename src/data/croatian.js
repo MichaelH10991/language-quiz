@@ -30,6 +30,7 @@ const greetings = [
     english: "Goodnight",
     englishOptions: ["good night", "goodnight"],
     foregin: "Laku noc",
+    pronounce: "lah-koo-notch",
     foreginDisplay: "Laku noč",
   },
   {

@@ -1,7 +1,7 @@
 import "../App.css";
 import { useState } from "react";
 
-import { randomQuestion } from "../utils";
+import { randomQuestion, questionsLeft, markQuestionAsDone } from "../utils";
 
 import Revise from "./Revise";
 import Dialog from "./OptionsDialog";
@@ -32,27 +32,6 @@ const checkAnswer = (answer, phrase, flip) => {
     return comp(answer, phrase.english, phrase.englishOptions);
   }
   return comp(answer, phrase.foregin, phrase.foreginOptions);
-};
-
-const questionsLeft = (questions) =>
-  questions.filter((question) => !question.done);
-
-const quizHelper = (questions) => {
-  const questionsMarkedAsDone = (phrase) =>
-    questions.map((question) => {
-      if (question.id === phrase.id) {
-        return {
-          ...question,
-          done: true,
-        };
-      }
-      return question;
-    });
-
-  const questionsLeft = (questions) =>
-    questions.filter((question) => !question.done);
-
-  return { questionsMarkedAsDone, questionsLeft };
 };
 
 const Quiz = () => {
@@ -92,17 +71,7 @@ const Quiz = () => {
         // });
         // setQuestions(filtered);
         // setPhrase(randomQuestion(filtered));
-        const helpers = quizHelper(questions);
-        const questionsMarkedAsDone = questions.map((question) => {
-          if (question.id === phrase.id) {
-            return {
-              ...question,
-              done: true,
-            };
-          }
-          return question;
-        });
-        console.log(questionsMarkedAsDone);
+        const questionsMarkedAsDone = markQuestionAsDone(questions, phrase);
         setQuestions(questionsMarkedAsDone);
         setPhrase(randomQuestion(questionsLeft(questionsMarkedAsDone)));
         setPreviousAns(phrase);
@@ -139,18 +108,28 @@ const Quiz = () => {
   };
 
   return (
-    <div style={{ padding: 35 + "px" }}>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+    <div style={{}}>
+      <h1>The "Very Good Language Quiz"</h1>
+      <div className="foo">
         <div
           style={{
             flex: 1,
             borderStyle: "solid",
             borderRadius: 9 + "px",
             background: "#202020",
-            marginRight: 11 + "px",
+            margin: 11 + "px",
             padding: 10 + "px",
           }}
         >
+          <div
+            style={{
+              position: "relative",
+              textAlign: "left",
+              color: "lightcoral",
+            }}
+          >
+            <i>{language}</i>
+          </div>
           <div
             style={{
               display: "relative",
@@ -166,12 +145,14 @@ const Quiz = () => {
             />
             <span>
               <input
-                onInput={(e) => setAnswer(e.target.value)}
+                onInput={(e) => {
+                  setAnswer(e.target.value);
+                }}
                 onKeyDown={handleKeyDown}
                 type="text"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
               />
               <div>
                 <button
@@ -194,7 +175,7 @@ const Quiz = () => {
             </span>
           </div>
         </div>
-        <div>
+        <div style={{ flex: "1 1 0%" }}>
           <Dialog>
             <div style={{ padding: 8 + "px" }}>
               <select value={language} onChange={handleLanguageChange}>
@@ -230,6 +211,23 @@ const Quiz = () => {
             </div>
           </Dialog>
         </div>
+      </div>
+      <div className="footer">
+        {`This app is in developmemnt, please check back for updates.`}
+        <br />
+        <span>
+          {"Click "}
+          <a
+            href="https://github.com/MichaelH10991/language-quiz"
+            target="_blank"
+            rel="noreferrer"
+          >
+            here
+          </a>
+          {" to see the code."}
+        </span>
+        <br />
+        {`Last update: ${process.env.REACT_APP_TIMESTAMP}`}
       </div>
     </div>
   );

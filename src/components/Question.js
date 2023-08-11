@@ -1,7 +1,7 @@
 const Question = (props) => {
   const { phrase, language, peek, flip } = props;
   if (!phrase) {
-    return "No more questions.";
+    return <div>Well done, smarty pants.</div>;
   }
 
   const capitalized = language.charAt(0).toUpperCase() + language.slice(1);

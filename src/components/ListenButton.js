@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 
 const createUrl = (phrase) =>
   `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(

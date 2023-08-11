@@ -1,3 +1,12 @@
+h1{
+  margin: 0em;
+  padding: 0.5em; 
+}
+
+a {
+  color: white;
+}
+
 .App {
   background-color: #374c77;
   color: white;
@@ -38,4 +47,40 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.foo {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+@media only screen and (max-device-width: 600px) { 
+  .foo {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+}
+
+@media only screen and (max-device-width: 1000px) { 
+  .foo {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #374c77;
+  color: white;
+  text-align: center;
+  padding: 0.5em;
 }

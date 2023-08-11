@@ -17,5 +17,29 @@ const randomQuestion = (questions) => {
   const randomNumber = getRandom(0, questions.length - 1);
   return questions[randomNumber];
 };
+/**
+ * Returns the questions left to answer in "normal" mode
+ * @param {*} questions
+ * @returns list of questions left to answer
+ */
+const questionsLeft = (questions) =>
+  questions.filter((question) => !question.done);
 
-export { getRandom, randomQuestion };
+/**
+ * Returns the questions passed in, marking the answered one as "done".
+ * @param {*} questions list of qwuestions
+ * @param {*} answeredPhrase the answered question
+ * @returns
+ */
+const markQuestionAsDone = (questions, answeredPhrase) =>
+  questions.map((question) => {
+    if (question.id === answeredPhrase.id) {
+      return {
+        ...question,
+        done: true,
+      };
+    }
+    return question;
+  });
+
+export { getRandom, randomQuestion, questionsLeft, markQuestionAsDone };
