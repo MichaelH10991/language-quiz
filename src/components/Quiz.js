@@ -144,8 +144,9 @@ const Quiz = () => {
               peek={peek}
               flip={flip}
             />
-            <span>
+            <div>
               <input
+                className="answer-input"
                 onInput={(e) => {
                   setAnswer(e.target.value);
                 }}
@@ -154,7 +155,10 @@ const Quiz = () => {
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
+                placeholder="Answer"
               />
+            </div>
+            <span>
               <div>
                 <button
                   onMouseDown={() => setPeek(true)}
