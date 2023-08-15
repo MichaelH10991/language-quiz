@@ -144,7 +144,7 @@ const Quiz = () => {
               peek={peek}
               flip={flip}
             />
-            <div>
+            <div style={{ padding: "0em 2em 0em 2em" }}>
               <input
                 className="answer-input"
                 onInput={(e) => {
@@ -161,15 +161,21 @@ const Quiz = () => {
             <span>
               <div>
                 <button
+                  className="button-60"
                   onMouseDown={() => setPeek(true)}
                   onMouseUp={() => setPeek(false)}
                 >
                   Peek
                 </button>
-                <button onClick={() => setPhrase(randomQuestion(questions))}>
+                <button
+                  className="button-60"
+                  onClick={() => setPhrase(randomQuestion(questions))}
+                >
                   Skip
                 </button>
-                <button onClick={() => setFlip(!flip)}>Flip</button>
+                <button className="button-60" onClick={() => setFlip(!flip)}>
+                  Flip
+                </button>
               </div>
               <Feedback
                 flip={flip}

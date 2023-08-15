@@ -9,7 +9,7 @@ const Question = (props) => {
   const question = () => {
     if (flip) {
       return (
-        <div>
+        <div style={{ marginBottom: "1em" }}>
           <span>What is "</span>
           <span style={{ color: peek ? "green" : " " }}>
             {!peek ? phrase.foregin : phrase.english}
@@ -20,7 +20,7 @@ const Question = (props) => {
               {phrase.pronounce ? (
                 phrase.pronounce
               ) : (
-                <div>WARN: No pronounciation provided!</div>
+                <div>No pronounciation provided!</div>
               )}
             </i>
           </div>
@@ -28,7 +28,7 @@ const Question = (props) => {
       );
     }
     return (
-      <div>
+      <div style={{ marginBottom: "1em" }}>
         <span>What is "</span>
         <span style={{ color: peek ? "green" : " " }}>
           {!peek ? phrase.english : phrase.foreginDisplay || phrase.foregin}
