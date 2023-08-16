@@ -51,6 +51,7 @@ const ListenButton = ({ phrase, buttonText }) => {
   return (
     <div>
       <button
+        className="button-60"
         onClick={async () => {
           setFetched(fetched + 1);
           if (

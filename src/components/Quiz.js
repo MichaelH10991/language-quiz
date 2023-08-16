@@ -80,6 +80,12 @@ const Quiz = () => {
         event.target.value = "";
       }
     } else {
+      const questionsMarkedAsDone = markQuestionAsDone(
+        questions,
+        phrase,
+        "incorrect"
+      );
+      setQuestions(questionsMarkedAsDone);
       setCorrect(false);
     }
     setShowFeedback(true);
@@ -111,17 +117,7 @@ const Quiz = () => {
     <div style={{}}>
       <h1>The "Very Good" Language Quiz</h1>
       <div className="foo">
-        <div
-          style={{
-            flex: 1,
-            borderStyle: "solid",
-            borderRadius: 9 + "px",
-            background: "#202020",
-            margin: 11 + "px",
-            padding: 10 + "px",
-            minWidth: "275px",
-          }}
-        >
+        <Dialog>
           <div
             style={{
               position: "relative",
@@ -143,12 +139,14 @@ const Quiz = () => {
               language={language}
               peek={peek}
               flip={flip}
+              questions={questions}
             />
             <div style={{ padding: "0em 2em 0em 2em" }}>
               <input
                 className="answer-input"
                 onInput={(e) => {
                   setAnswer(e.target.value);
+                  setShowFeedback(false);
                 }}
                 onKeyDown={handleKeyDown}
                 type="text"
@@ -164,16 +162,26 @@ const Quiz = () => {
                   className="button-60"
                   onMouseDown={() => setPeek(true)}
                   onMouseUp={() => setPeek(false)}
+                  onTouchStart={() => setPeek(true)}
                 >
                   Peek
                 </button>
                 <button
                   className="button-60"
-                  onClick={() => setPhrase(randomQuestion(questions))}
+                  onClick={() => {
+                    setPhrase(randomQuestion(questions));
+                    setShowFeedback(false);
+                  }}
                 >
                   Skip
                 </button>
-                <button className="button-60" onClick={() => setFlip(!flip)}>
+                <button
+                  className="button-60"
+                  onClick={() => {
+                    setFlip(!flip);
+                    setShowFeedback(false);
+                  }}
+                >
                   Flip
                 </button>
               </div>
@@ -185,47 +193,43 @@ const Quiz = () => {
               />
             </span>
           </div>
-        </div>
-        <div style={{ flex: "1 1 0%" }}>
-          <Dialog>
-            <div style={{ padding: 8 + "px" }}>
-              <select value={language} onChange={handleLanguageChange}>
-                {Object.keys(languages).map((item) => (
-                  <option value={item}>{item}</option>
-                ))}
-              </select>
-              <select value={questionSet} onChange={handleQuestionSetChange}>
-                {Object.keys(languages[language]).map((item) => (
-                  <option value={item}>{item}</option>
-                ))}
-              </select>
+        </Dialog>
+        <Dialog>
+          <div style={{ padding: 8 + "px" }}>
+            <select value={language} onChange={handleLanguageChange}>
+              {Object.keys(languages).map((item) => (
+                <option value={item}>{item}</option>
+              ))}
+            </select>
+            <select value={questionSet} onChange={handleQuestionSetChange}>
+              {Object.keys(languages[language]).map((item) => (
+                <option value={item}>{item}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ textAlign: "left", padding: 5 + "px" }}>
+            <div>Questions left: {questionsLeft(questions).length}</div>
+            <div>
+              Infinite Mode
+              <input
+                type="checkbox"
+                checked={infinite}
+                onClick={() => setInfinite(!infinite)}
+              ></input>
             </div>
-            <div style={{ textAlign: "left", padding: 5 + "px" }}>
-              <div>Questions left: {questionsLeft(questions).length}</div>
-              <div>
-                Infinite Mode
-                <input
-                  type="checkbox"
-                  checked={infinite}
-                  onClick={() => setInfinite(!infinite)}
-                ></input>
-              </div>
-              <Revise phrases={questions}>
-                <ListenButton
-                  phrase={
-                    (phrase && phrase.foreginDisplay) ||
-                    (phrase && phrase.foregin)
-                  }
-                  buttonText={"Say answer"}
-                />
-              </Revise>
-            </div>
-          </Dialog>
-        </div>
+            <Revise phrases={questions}>
+              <ListenButton
+                phrase={
+                  (phrase && phrase.foreginDisplay) ||
+                  (phrase && phrase.foregin)
+                }
+                buttonText={"Say answer"}
+              />
+            </Revise>
+          </div>
+        </Dialog>
       </div>
       <div className="footer">
-        {`This app is in developmemnt, please check back for updates.`}
-        <br />
         <span>
           {"See the code "}
           <a

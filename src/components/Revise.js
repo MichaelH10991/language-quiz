@@ -1,5 +1,31 @@
 import { useState } from "react";
 
+const incorrect = {
+  color: "red",
+};
+
+const doneIncorrect = {
+  ...incorrect,
+  textDecoration: "line-through",
+};
+
+const doneCorrect = {
+  color: "green",
+  textDecoration: "line-through",
+};
+
+const computeStyle = (phrase) => {
+  if (phrase.done && phrase.incorrect) {
+    return doneIncorrect;
+  } else if (phrase.incorrect) {
+    return incorrect;
+  } else if (phrase.done) {
+    return doneCorrect;
+  } else {
+    return {};
+  }
+};
+
 const Revise = (props) => {
   const { phrases, children } = props;
   const [revise, setRevise] = useState(false);
@@ -20,7 +46,7 @@ const Revise = (props) => {
           }}
         >
           {phrases.map((phrase, index) => (
-            <div style={phrase.done ? { textDecoration: "line-through" } : {}}>
+            <div style={computeStyle(phrase)}>
               {phrase.english} - {phrase.foregin}
             </div>
           ))}

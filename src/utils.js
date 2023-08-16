@@ -31,15 +31,51 @@ const questionsLeft = (questions) =>
  * @param {*} answeredPhrase the answered question
  * @returns
  */
-const markQuestionAsDone = (questions, answeredPhrase) =>
+const markQuestionAsDone = (questions, answeredPhrase, outcome = "done") =>
   questions.map((question) => {
     if (question.id === answeredPhrase.id) {
-      return {
-        ...question,
-        done: true,
-      };
+      if (outcome === "done") {
+        return {
+          ...question,
+          done: true,
+        };
+      } else if (outcome === "incorrect") {
+        return {
+          ...question,
+          incorrect: true,
+        };
+      }
     }
     return question;
   });
 
-export { getRandom, randomQuestion, questionsLeft, markQuestionAsDone };
+const quizResults = (questions) => {
+  return questions.reduce(
+    (acc, question) => {
+      return {
+        correct:
+          question.done && !question.incorrect ? acc.correct + 1 : acc.correct,
+        incorrect: question.incorrect ? acc.incorrect + 1 : acc.incorrect,
+      };
+    },
+    { correct: 0, incorrect: 0 }
+  );
+};
+
+const calculateScore = (questions) => {
+  const { correct, incorrect } = quizResults(questions);
+  const totalQuestions = questions.length;
+  return {
+    correct,
+    incorrect,
+    percentage: `${Math.floor((correct / totalQuestions) * 100)}%`,
+  };
+};
+
+export {
+  getRandom,
+  randomQuestion,
+  questionsLeft,
+  markQuestionAsDone,
+  calculateScore,
+};
