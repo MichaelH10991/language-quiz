@@ -47,7 +47,7 @@ const Revise = (props) => {
         >
           {phrases.map((phrase, index) => (
             <div style={computeStyle(phrase)}>
-              {phrase.english} - {phrase.foregin}
+              {phrase.local} - {phrase.foreignDisplay || phrase.foreign}
             </div>
           ))}
           {children}

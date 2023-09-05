@@ -1,5 +1,7 @@
 import "../App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { read } from "../api/quizApi";
 
 import { randomQuestion, questionsLeft, markQuestionAsDone } from "../utils";
 
@@ -8,14 +10,12 @@ import Dialog from "./OptionsDialog";
 import Question from "./Question";
 import Feedback from "./Feedback";
 import ListenButton from "./ListenButton";
+import ManagementTable from "./management/ManagementTable";
 
-import languages from "../data";
+// import languages from "../data";
 
 // languages = self explanitory, can contain many question sets
 // question set = the specific groups of questions e.g. greetings, things to say in a resturaunt, etc.;
-
-const defaultLanguage = Object.keys(languages)[0]; // first language in list
-const defaultQuestionSet = Object.keys(languages[defaultLanguage])[0]; // first question set
 
 const checkAnswer = (answer, phrase, flip) => {
   const comp = (ans, phrase, options) => {
@@ -29,29 +29,72 @@ const checkAnswer = (answer, phrase, flip) => {
   };
 
   if (flip) {
-    return comp(answer, phrase.english, phrase.englishOptions);
+    return comp(answer, phrase.local, phrase.localOptions);
   }
-  return comp(answer, phrase.foregin, phrase.foreginOptions);
+  return comp(answer, phrase.foreign, phrase.foreignOptions);
 };
 
+// const defaultLanguage = (languages) => languages && Object.keys(languages)[0];
+// const defaultQuestionSet = (languages) => {
+//   const language = defaultLanguage(languages);
+//   return languages && Object.keys(languages[language])[0];
+// };
+
 const Quiz = () => {
+  const [languages, setLanguages] = useState();
+  const defaultLanguage = languages && Object.keys(languages)[0]; // first language in list
+  const defaultQuestionSet =
+    languages && defaultLanguage && Object.keys(languages[defaultLanguage])[0]; // first question set
+
   const [answer, setAnswer] = useState("");
   const [language, setLanguage] = useState(defaultLanguage);
   const [questionSet, setQuestionSet] = useState(defaultQuestionSet);
   const [questions, setQuestions] = useState(
-    languages[defaultLanguage][defaultQuestionSet]
+    languages &&
+      defaultLanguage &&
+      defaultQuestionSet &&
+      languages[defaultLanguage][defaultQuestionSet]
   );
   const [correct, setCorrect] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [peek, setPeek] = useState(false);
   const [phrase, setPhrase] = useState(randomQuestion(questions));
   const [previousAns, setPreviousAns] = useState("");
-  const [infinite, setInfinite] = useState(true);
+  const [infinite, setInfinite] = useState(false);
   const [flip, setFlip] = useState(false);
+  const [showTable, setShowTable] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetch() {
+      setLoading(true);
+      try {
+        const response = await read();
+
+        if (response && Object.keys(response).length) {
+          setLanguages(response);
+          const defaultLanguage = Object.keys(response)[0];
+          const defaultQuestionSet = Object.keys(response[defaultLanguage])[0];
+          const questions = response[defaultLanguage][defaultQuestionSet];
+          setLanguage(defaultLanguage);
+          setQuestionSet(defaultQuestionSet);
+          setQuestions(questions);
+          setPhrase(randomQuestion(questions));
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error.message);
+        setLoading(false);
+        setNetworkError(true);
+      }
+    }
+    fetch();
+  }, []);
 
   const submitAnswer = (event) => {
     if (checkAnswer(answer, phrase, flip)) {
-      if (infinite) {
+      if (!infinite) {
         // dont get rid of question, but reset state
         setPreviousAns(phrase);
         setAnswer("");
@@ -72,6 +115,8 @@ const Quiz = () => {
         // setQuestions(filtered);
         // setPhrase(randomQuestion(filtered));
         const questionsMarkedAsDone = markQuestionAsDone(questions, phrase);
+        console.log(questionsMarkedAsDone);
+
         setQuestions(questionsMarkedAsDone);
         setPhrase(randomQuestion(questionsLeft(questionsMarkedAsDone)));
         setPreviousAns(phrase);
@@ -85,6 +130,7 @@ const Quiz = () => {
         phrase,
         "incorrect"
       );
+      console.log(questionsMarkedAsDone);
       setQuestions(questionsMarkedAsDone);
       setCorrect(false);
     }
@@ -111,6 +157,13 @@ const Quiz = () => {
     setQuestionSet(e.target.value);
     setQuestions(languages[language][e.target.value]);
     setPhrase(randomQuestion(languages[language][e.target.value]));
+    const questions =
+      languages && language && languages[language][e.target.value];
+    if (questions) {
+      setQuestionSet(e.target.value);
+      setQuestions(questions);
+      setPhrase(randomQuestion(questions));
+    }
   };
 
   return (
@@ -140,6 +193,8 @@ const Quiz = () => {
               peek={peek}
               flip={flip}
               questions={questions}
+              networkError={networkError}
+              loading={loading}
             />
             <div style={{ padding: "0em 2em 0em 2em" }}>
               <input
@@ -196,21 +251,32 @@ const Quiz = () => {
         </Dialog>
         <Dialog>
           <div style={{ padding: 8 + "px" }}>
-            <select value={language} onChange={handleLanguageChange}>
-              {Object.keys(languages).map((item) => (
-                <option value={item}>{item}</option>
-              ))}
+            <select
+              value={language || "loading"}
+              onChange={handleLanguageChange}
+            >
+              {languages &&
+                Object.keys(languages).map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
             </select>
-            <select value={questionSet} onChange={handleQuestionSetChange}>
-              {Object.keys(languages[language]).map((item) => (
-                <option value={item}>{item}</option>
-              ))}
+            <select
+              value={questionSet || "loading"}
+              onChange={handleQuestionSetChange}
+            >
+              {languages &&
+                language &&
+                Object.keys(languages[language]).map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
             </select>
           </div>
           <div style={{ textAlign: "left", padding: 5 + "px" }}>
-            <div>Questions left: {questionsLeft(questions).length}</div>
             <div>
-              Infinite Mode
+              Questions left: {questions && questionsLeft(questions).length}
+            </div>
+            <div>
+              Challenge Mode
               <input
                 type="checkbox"
                 checked={infinite}
@@ -220,15 +286,27 @@ const Quiz = () => {
             <Revise phrases={questions}>
               <ListenButton
                 phrase={
-                  (phrase && phrase.foreginDisplay) ||
-                  (phrase && phrase.foregin)
+                  (phrase && phrase.foreignDisplay) ||
+                  (phrase && phrase.foreign)
                 }
+                language={language}
                 buttonText={"Say answer"}
               />
             </Revise>
+            <div>
+              Show management table
+              <input
+                type="checkbox"
+                checked={showTable}
+                onClick={() => setShowTable(!showTable)}
+              />
+            </div>
           </div>
         </Dialog>
       </div>
+      {/* <NewQuestion /> */}
+      <ManagementTable showTable={showTable} questions={questions} />
+      <div style={{ height: "calc(100vh - 331px)" }} />
       <div className="footer">
         <span>
           {"See the code "}

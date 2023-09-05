@@ -13,7 +13,7 @@ const getRandom = (min, max) => {
  * @param {*} questions
  * @returns phrase object
  */
-const randomQuestion = (questions) => {
+const randomQuestion = (questions = []) => {
   const randomNumber = getRandom(0, questions.length - 1);
   return questions[randomNumber];
 };
@@ -31,9 +31,9 @@ const questionsLeft = (questions) =>
  * @param {*} answeredPhrase the answered question
  * @returns
  */
-const markQuestionAsDone = (questions, answeredPhrase, outcome = "done") =>
+const markQuestionAsDone = (questions = [], answeredPhrase, outcome = "done") =>
   questions.map((question) => {
-    if (question.id === answeredPhrase.id) {
+    if (question._id === answeredPhrase._id) {
       if (outcome === "done") {
         return {
           ...question,
@@ -49,7 +49,7 @@ const markQuestionAsDone = (questions, answeredPhrase, outcome = "done") =>
     return question;
   });
 
-const quizResults = (questions) => {
+const quizResults = (questions = []) => {
   return questions.reduce(
     (acc, question) => {
       return {
@@ -62,7 +62,7 @@ const quizResults = (questions) => {
   );
 };
 
-const calculateScore = (questions) => {
+const calculateScore = (questions = []) => {
   const { correct, incorrect } = quizResults(questions);
   const totalQuestions = questions.length;
   return {

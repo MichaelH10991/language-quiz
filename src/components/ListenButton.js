@@ -1,9 +1,16 @@
 import React, { useState, useRef } from "react";
 
-const createUrl = (phrase) =>
+const languageMap = {
+  croatian: "hr",
+  german: "de",
+  french: "fr",
+  spanish: "es",
+};
+
+const createUrl = (phrase, language) =>
   `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(
     phrase
-  )}&tl=hr&client=tw-ob`;
+  )}&tl=${languageMap[language.toLowerCase()]}&client=tw-ob`;
 
 const audioSync = (url) => {
   return new Promise((done) => {
@@ -12,7 +19,7 @@ const audioSync = (url) => {
   });
 };
 
-const ListenButton = ({ phrase, buttonText }) => {
+const ListenButton = ({ phrase, language, buttonText }) => {
   const [fetched, setFetched] = useState(1);
   // const [audio, setAudio] = useState(
   //   fetched === 1 && new Audio(createUrl(phrase))
@@ -58,13 +65,13 @@ const ListenButton = ({ phrase, buttonText }) => {
             previousValues.current.phrase !== phrase &&
             previousValues.current.fetched !== fetched
           ) {
-            const audio = await audioSync(createUrl(phrase));
+            const audio = await audioSync(createUrl(phrase, language));
             audio.play();
             setAudio(audio);
             previousValues.current = { phrase, fetched };
           } else {
             if (fetched === 1) {
-              const audio = await audioSync(createUrl(phrase));
+              const audio = await audioSync(createUrl(phrase, language));
               setAudio(audio);
               audio.play();
             } else {
