@@ -1,7 +1,23 @@
 import { calculateScore } from "../utils";
 
 const Question = (props) => {
-  const { phrase, language, peek, flip, questions } = props;
+  const { phrase, language, peek, flip, questions, networkError, loading } =
+    props;
+
+  if (loading) {
+    return "Loading questions...";
+  }
+
+  if (networkError) {
+    return (
+      <div>
+        <div>There was an issue fetching the questions :( </div>
+        <br />
+        <div>Please try again later.</div>
+      </div>
+    );
+  }
+
   if (!phrase) {
     const score = calculateScore(questions);
     return (
@@ -30,7 +46,7 @@ const Question = (props) => {
         <div style={{ marginBottom: "1em" }}>
           <span>What is "</span>
           <span style={{ color: peek ? "green" : " " }}>
-            {!peek ? phrase.foregin : phrase.english}
+            {!peek ? phrase.foreign : phrase.local}
           </span>
           <span>" in English</span>
           <div style={{ color: "lightcoral" }}>
@@ -49,11 +65,11 @@ const Question = (props) => {
       <div style={{ marginBottom: "1em" }}>
         <span>What is "</span>
         <span style={{ color: peek ? "green" : " " }}>
-          {!peek ? phrase.english : phrase.foreginDisplay || phrase.foregin}
+          {!peek ? phrase.local : phrase.foreignDisplay || phrase.foreign}
         </span>
         <span>" in {capitalized}</span>
         <div style={{ visibility: "hidden" }}>
-          <i>{phrase.foregin}</i>
+          <i>{phrase.foreign}</i>
         </div>
       </div>
     );

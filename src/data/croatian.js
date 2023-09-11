@@ -3,8 +3,8 @@ import { v4 } from "uuid";
 const greetings = [
   {
     id: 0,
-    english: "Hello/Hi/Goodbye",
-    englishOptions: ["hello", "hi", "goodbye", "good bye"],
+    english: "Hi/Goodbye",
+    englishOptions: ["hi", "goodbye", "good bye"],
     pronounce: "bok",
     foregin: "Bok",
   },
@@ -46,6 +46,17 @@ const greetings = [
     pronounce: "doh-vee-JEH-nyah",
     foreginDisplay: "Doviđenja",
   },
+  {
+    id: v4(),
+    english: "Do you speak english",
+    foregin: "GovoriS li engleski",
+    foreginDisplay: "GovoriŠ li engleski",
+  },
+  {
+    id: v4(),
+    english: "how are you",
+    foregin: "kako si",
+  },
 ];
 
 const responses = [
@@ -72,6 +83,22 @@ const resturaunt = [
     id: v4(),
     english: "table",
     foregin: "stol",
+  },
+  {
+    id: v4(),
+    english: "without meat",
+    foregin: "bez mesa",
+  },
+  {
+    id: v4(),
+    english: "no dairy products",
+    foregin: "nema mlijecnih proizvoda",
+    foreginDisplay: "nema mliječnih proizvoda",
+  },
+  {
+    id: v4(),
+    english: "toilet",
+    foregin: "zahod",
   },
 ];
 

@@ -12,10 +12,10 @@ const OutputComponent = (props) => {
 
 const output = (flip, previousAns) =>
   flip ? (
-    <OutputComponent word={previousAns.english} />
+    <OutputComponent word={previousAns.local} />
   ) : (
     <OutputComponent
-      word={previousAns.foreginDisplay || previousAns.foregin}
+      word={previousAns.foreignDisplay || previousAns.foreign}
       pronounce={previousAns.pronounce || ""}
     />
   );
@@ -33,7 +33,8 @@ const Feedback = (props) => {
       <div>Correct!</div>
       <div>{output(flip, previousAns)}</div>
       <ListenButton
-        phrase={previousAns.foreginDisplay || previousAns.foregin}
+        phrase={previousAns.foreignDisplay || previousAns.foreign}
+        language={previousAns.language}
       />
     </div>
   ) : (
