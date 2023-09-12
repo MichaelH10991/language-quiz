@@ -14,11 +14,27 @@ import {
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
 import { randomId } from "@mui/x-data-grid-generator";
+import Select from "./Select";
 
 import { create, deleteOne } from "../../api/quizApi";
 
+const getLanguages = (data) => (data && Object.keys(data)) || [];
+const getGroups = (data, language) =>
+  (data && language && data[language] && Object.keys(data[language])) || [];
+
+const getQuestions = (data, language, group) =>
+  (data && language && group && data[language][group]) || [];
+
 function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
+  const {
+    setRows,
+    setRowModesModel,
+    languages,
+    selectedLanguage,
+    selectedGroup,
+    setSelectedLanguage,
+    setSelectedGroup,
+  } = props;
 
   const handleClick = () => {
     const id = randomId();
@@ -26,8 +42,8 @@ function EditToolbar(props) {
       ...oldRows,
       {
         id,
-        language: "",
-        group: "",
+        language: selectedLanguage || "",
+        group: selectedGroup || "",
         local: "",
         foreign: "",
         foreignDisplay: "",
@@ -45,23 +61,36 @@ function EditToolbar(props) {
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
       </Button>
+      <Select
+        title="Language"
+        items={getLanguages(languages)}
+        setValue={setSelectedLanguage}
+      />
+      <Select
+        title="Group"
+        items={getGroups(languages, selectedLanguage)}
+        setValue={setSelectedGroup}
+      />
     </GridToolbarContainer>
   );
 }
 
 export default function FullFeaturedCrudGrid(props) {
-  const { questions, setQuestions, showTable, languages } = props;
+  const { showTable, languages } = props;
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
+  const [selectedLanguage, setSelectedLanguage] = React.useState();
+  const [selectedGroup, setSelectedGroup] = React.useState();
 
   React.useEffect(() => {
-    const q =
-      questions &&
-      questions.map((question, index) => {
-        return question;
-      });
-    setRows(q || []);
-  }, [questions]);
+    setRows(
+      (selectedLanguage &&
+        selectedGroup &&
+        languages[selectedLanguage] &&
+        languages[selectedLanguage][selectedGroup]) ||
+        []
+    );
+  }, [languages, selectedGroup, selectedLanguage]);
 
   if (!showTable) {
     return undefined;
@@ -210,7 +239,15 @@ export default function FullFeaturedCrudGrid(props) {
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          toolbar: {
+            setRows,
+            setRowModesModel,
+            languages,
+            selectedLanguage,
+            selectedGroup,
+            setSelectedLanguage,
+            setSelectedGroup,
+          },
         }}
       />
     </Box>

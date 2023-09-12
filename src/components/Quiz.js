@@ -305,7 +305,12 @@ const Quiz = () => {
         </Dialog>
       </div>
       {/* <NewQuestion /> */}
-      <ManagementTable showTable={showTable} questions={questions} />
+      <ManagementTable
+        showTable={showTable}
+        questions={questions}
+        languages={languages}
+        questionSet={questionSet}
+      />
       <div style={{ height: "calc(100vh - 331px)" }} />
       <div className="footer">
         <span>
