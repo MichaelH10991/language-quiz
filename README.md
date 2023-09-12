@@ -6,4 +6,7 @@ try it! http://language-quiz.s3-website.eu-west-2.amazonaws.com
 
 # TODO
 
-1. Needs a clean up
+1. Refactor
+
+The language and group selector components should be refactored into their seperate components
+I could probably clean up the state hooks a bit
