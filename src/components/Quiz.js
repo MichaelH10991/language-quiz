@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { read } from "../api/quizApi";
 
 import { randomQuestion, questionsLeft, markQuestionAsDone } from "../utils";
+import text from "./text";
 
 import Revise from "./Revise";
 import Dialog from "./OptionsDialog";
@@ -168,7 +169,7 @@ const Quiz = () => {
 
   return (
     <div style={{}}>
-      <h1>The "Very Good" Language Quiz</h1>
+      <h1>{text.heading}</h1>
       <div className="foo">
         <Dialog>
           <div
@@ -301,6 +302,10 @@ const Quiz = () => {
                 onClick={() => setShowTable(!showTable)}
               />
             </div>
+          </div>
+          <div>
+            <h2>{text.disclaimerHeading}</h2>
+            <p style={{ textAlign: "left" }}>{text.disclaimerBody}</p>
           </div>
         </Dialog>
       </div>

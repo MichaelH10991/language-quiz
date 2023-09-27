@@ -5,6 +5,7 @@ const languageMap = {
   german: "de",
   french: "fr",
   spanish: "es",
+  portuguese: "pt-PT",
 };
 
 const createUrl = (phrase, language) =>
